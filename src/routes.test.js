@@ -11,7 +11,7 @@ describe('Routes', () => {
   });
 
   test('render cards route ', () => {
-    const route='/cartoes'
+    const route = '/cartoes';
     render(
       <MemoryRouter initialEntries={[route]}>
         <Routes>
@@ -22,8 +22,19 @@ describe('Routes', () => {
       </MemoryRouter>
     );
 
-    const myCards=screen.getByText('Meus cartões')
-    expect(myCards).toHaveTextContent('Meus cartões')
+    const myCards = screen.getByText('Meus cartões');
+    expect(myCards).toHaveTextContent('Meus cartões');
+  });
 
+  test('render a current route location', () => {
+    const route = '/cartoes';
+    render(
+      <MemoryRouter initialEntries={[route]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    const myCurrentLocation=screen.getByTestId('local')
+    expect(myCurrentLocation).toHaveTextContent(route)
   });
 });
