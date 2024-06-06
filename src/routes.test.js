@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import App from './paginas/Principal/App';
 import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 import Cartoes from './componentes/Cartoes';
+import AppRoutes from './routes'
 
 describe('Routes', () => {
   test('render default route', () => {
@@ -37,4 +38,16 @@ describe('Routes', () => {
     const myCurrentLocation=screen.getByTestId('local')
     expect(myCurrentLocation).toHaveTextContent(route)
   });
+
+
+  test('render a notfound page',()=>{
+    const route='/extrato'
+    render(
+        <MemoryRouter initialEntries={[route]}>
+          <AppRoutes />
+        </MemoryRouter>
+      );
+      const pageNotFound=screen.getByTestId('pagina-404')
+      expect(pageNotFound).toContainHTML('<h1>Ops! Não encontramos a página</h1>')
+  })
 });
