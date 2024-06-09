@@ -2,6 +2,7 @@ import api from './api';
 import { buscaTransacoes, salvaTransacao } from './transacoes';
 
 jest.mock('./api');
+
 const mockTransaction = [
   {
     id: 1,
