@@ -1,17 +1,31 @@
-import {render,screen} from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import App from '../paginas/Principal/App'
+import api from './api'
 import { buscaTransacoes } from './transacoes'
 
+jest.mock('./api')
+const mockTransaction=[{
+    id:1,
+    transacao:'Déposito',
+    valor:'100',
+    data:'22/11/2022',
+    mes:'Novembro'
+}];
+
+const mockRequest= ( retorno )=>{
+    return new Promise((resolve)=>{
+        setTimeout(()=>{
+            resolve({
+                data:retorno
+            })
+        },1000)
+    })
+}
+
 describe('tests requists for API',()=>{
-    test('must return a list of transactions',async ()=>{
-        const transactions=await buscaTransacoes();
-        expect(transactions).toHaveLength(3);
-
-
-        render(<App/>,{wrapper:BrowserRouter})
-        const transaction=await screen.findAllByText('Novembro')
-        transaction.forEach(item=>expect(item).toBeInTheDocument())
-
+    test('must return a arrya of transactions',async ()=>{
+        api.get.mockImplementation(()=>mockRequest(mockTransaction))
+        const transaction =await buscaTransacoes();
+        expect(transaction).toEqual(mockTransaction)
+        expect(api.get).toHaveBeenCalledWith('/transacoes')
     })
 })
+
